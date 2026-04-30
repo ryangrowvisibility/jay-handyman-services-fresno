@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, Sora } from "next/font/google";
+import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const display = DM_Serif_Display({
+const display = Source_Serif_4({
   variable: "--font-display",
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const body = Sora({
-  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
@@ -31,11 +25,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${body.variable} antialiased`}
-    >
-      <body className="min-h-[100dvh] flex flex-col bg-paper text-ink">
+    <html lang="en" className={`${display.variable} antialiased`}>
+      <body className="min-h-[100dvh] flex flex-col bg-ivory text-espresso">
         {children}
       </body>
     </html>

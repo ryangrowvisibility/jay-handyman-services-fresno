@@ -1,63 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --paper: oklch(0.972 0.012 90);
-  --paper-warm: oklch(0.945 0.018 80);
-  --ink: oklch(0.18 0.014 250);
-  --ink-soft: oklch(0.36 0.014 250);
-  --ink-quiet: oklch(0.55 0.014 250);
-  --line: oklch(0.18 0.014 250 / 0.10);
-  --line-strong: oklch(0.18 0.014 250 / 0.18);
-  --accent: oklch(0.50 0.15 248);   /* one accent — electrical blue, used sparingly */
+  /* Maximum distill — warm ivory, deep espresso, ONE rust accent */
+  --ivory: oklch(0.965 0.012 75);
+  --ivory-warm: oklch(0.94 0.018 72);
+  --espresso: oklch(0.20 0.018 50);
+  --espresso-soft: oklch(0.36 0.018 50);
+  --espresso-quiet: oklch(0.55 0.014 50);
+  --rust: oklch(0.52 0.155 45);    /* single accent — replaces V2 electrical-blue */
+  --line: oklch(0.20 0.018 50 / 0.10);
+  --line-strong: oklch(0.20 0.018 50 / 0.20);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 html, body {
-  background: var(--paper) !important;
-  color: var(--ink);
+  background: var(--ivory) !important;
+  color: var(--espresso);
 }
 
 body {
-  font-family: var(--font-body), Georgia, serif;
+  font-family: var(--font-display), Georgia, serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-warm: var(--paper-warm);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-quiet: var(--ink-quiet);
+  --color-ivory: var(--ivory);
+  --color-ivory-warm: var(--ivory-warm);
+  --color-espresso: var(--espresso);
+  --color-espresso-soft: var(--espresso-soft);
+  --color-espresso-quiet: var(--espresso-quiet);
+  --color-rust: var(--rust);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
-  --color-accent: var(--accent);
   --font-display: var(--font-display);
-  --font-body: var(--font-body);
 }
 
-::selection { background: var(--accent); color: var(--paper); }
+::selection { background: var(--rust); color: var(--ivory); }
 
-/* emil: scale(0.97) on press, transition only transform/opacity, custom ease-out */
 button, a {
   transition: transform 180ms var(--ease-out), color 200ms ease, background-color 200ms ease, border-color 200ms ease, opacity 200ms ease;
 }
 button:active, a:active { transform: scale(0.97); }
 
-/* Stagger entries — 50ms between items per emil's spec */
 @keyframes settle {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .settle { animation: settle 600ms var(--ease-out) both; }
-.settle-1 { animation-delay: 60ms; }
-.settle-2 { animation-delay: 120ms; }
-.settle-3 { animation-delay: 180ms; }
-.settle-4 { animation-delay: 240ms; }
+.settle-1 { animation-delay: 80ms; }
+.settle-2 { animation-delay: 160ms; }
+.settle-3 { animation-delay: 240ms; }
 
-/* Tabular figures for stats */
 .tnum { font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: reduce) {
