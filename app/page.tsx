@@ -1,226 +1,310 @@
-import Script from "next/script";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Jay's Handyman Service — Fresno, CA",
+};
 
 const PHONE = "(559) 358-5216";
 const PHONE_HREF = "tel:+15593585216";
 const ADDRESS = "3075 W Ashlan Ave #26, Fresno, CA 93722";
-const MAPS = "https://www.google.com/maps/search/?api=1&query=Jay%20Handyman%20Services&query_place_id=ChIJ_-pkcklnlIARftK-eV9Zi8s";
+const HOURS = "Monday — Saturday";
+const YELP = "https://www.yelp.com/biz/jay-s-handyman-service-fresno";
+const NEXTDOOR = "https://nextdoor.com/pages/jay-handyman-service-llc-fresno-ca/";
+const MAPS_EMBED =
+  "https://maps.google.com/maps?q=3075%20W%20Ashlan%20Ave%2C%20Fresno%2C%20CA%2093722&output=embed";
 
 const services = [
-  { n: "01", t: "Plumbing repairs",     d: "Leaks, fixtures, supply & drain — diagnosed and repaired in one visit." },
-  { n: "02", t: "Electrical work",       d: "15 years in the field. Outlets, switches, ceiling fan installs, troubleshooting." },
-  { n: "03", t: "Drywall & tile",        d: "Patching, finishing, and bathroom tile work — finished cleanly, often ahead of schedule." },
-  { n: "04", t: "Wall painting",         d: "Touch-ups and full rooms — interior wall painting on tight timelines." },
-  { n: "05", t: "Ceiling fans & assembly", d: "New ceiling fan installs, indoor furniture assembly, fixture mounting." },
-  { n: "06", t: "Gutters & power wash",  d: "Gutter cleaning and exterior power washing for routine home maintenance." },
+  { name: "Plumbing repair", note: "Leaks, fixtures, valves, supply lines." },
+  { name: "Electrical work", note: "Fifteen years on crews before this. Outlets, fixtures, fans, panel-adjacent." },
+  { name: "Drywall", note: "Patch holes. Re-tape seams. Float and texture-match." },
+  { name: "Wall painting", note: "Touch-up rooms or repaint. Cut lines that hold." },
+  { name: "Ceiling fan installation", note: "Boxed delivery, mounted and wired." },
+  { name: "Bathroom tile", note: "Shower, tub surround, floor tile. Finished projects on tight timelines." },
+  { name: "Furniture assembly", note: "New-house setups. The whole list at once." },
+  { name: "Gutter cleaning", note: "Leaves, sediment, splash-block resets." },
+  { name: "Power washing", note: "Driveways, patios, fences, exterior siding." },
+  { name: "Residential roofing", note: "Patch jobs and small repairs. Larger work referred out." },
+  { name: "Residential & commercial repairs", note: "Whatever the building needs that someone else won't show up for." },
 ];
 
-const ld = {
-  "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "name": "Jay Handyman Services",
-  "telephone": "+15593585216",
-  "address": { "@type": "PostalAddress", "streetAddress": "3075 W Ashlan Ave #26", "addressLocality": "Fresno", "addressRegion": "CA", "postalCode": "93722", "addressCountry": "US" },
-  "areaServed": "Fresno and surrounding areas",
-  "description": "Jay Handyman Service LLC. 10 years serving Fresno. Owner brings 15 years electrical experience plus 8+ years handyman work. Plumbing, electrical, drywall, painting, fans, gutters, tile.",
-  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5", "reviewCount": "13" }
-};
+const PhoneIcon = ({ className = "" }: { className?: string }) => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
+    <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
 
-function Wrench({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" className={className} fill="none" aria-hidden="true">
-      <path d="M22 4a6 6 0 0 0-5.6 8.1L4 24.5 7.5 28l12.4-12.4A6 6 0 1 0 22 4Zm0 8.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
-    </svg>
-  );
-}
+const PinIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 22s7-7.6 7-13a7 7 0 1 0-14 0c0 5.4 7 13 7 13z" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
 
-export default function Home() {
+const ClockIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+export default function Page() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    name: "Jay's Handyman Service",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "3075 W Ashlan Ave #26",
+      addressLocality: "Fresno",
+      addressRegion: "CA",
+      postalCode: "93722",
+      addressCountry: "US",
+    },
+    telephone: PHONE,
+    url: "https://jay-handyman-services-fresno.vercel.app",
+    priceRange: "$$",
+    areaServed: "Fresno, CA",
+    foundingDate: "2015",
+    sameAs: [YELP, NEXTDOOR],
+    aggregateRating: { "@type": "AggregateRating", ratingValue: "5", reviewCount: "13" },
+    openingHours: "Mo-Sa",
+  };
+
   return (
     <>
-      <Script id="ld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
+      {/* SIMPLE TOP BAR — distill: no glass, no chrome */}
       <header className="border-b border-line">
-        <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em]">
-          <div className="flex items-center gap-2 text-ink">
-            <Wrench className="h-4 w-4 text-signal" />
-            <span>Jay Handyman · Fresno</span>
-          </div>
-          <a href={PHONE_HREF} className="text-ink hover:text-signal">{PHONE}</a>
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-6 flex items-center justify-between">
+          <a href="/" className="flex items-baseline gap-3">
+            <span className="font-display text-[20px] tracking-[-0.01em] text-ink">
+              Jay&apos;s Handyman
+            </span>
+            <span className="text-[11px] uppercase tracking-[0.18em] text-ink-quiet">
+              Fresno
+            </span>
+          </a>
+          <a
+            href={PHONE_HREF}
+            className="inline-flex items-center gap-2 text-[13px] tnum text-ink hover:text-accent"
+          >
+            <PhoneIcon /> {PHONE}
+          </a>
         </div>
       </header>
 
-      <section className="mx-auto max-w-5xl px-6 pt-20 md:pt-28 pb-16 md:pb-24">
-        <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-ink-soft mb-8 fade-up">
-          Fresno · est. 2014 · 13 Yelp reviews
-        </p>
-        <h1 className="font-[family-name:var(--font-display)] text-ink leading-[0.95] tracking-tight fade-up"
-            style={{ fontSize: "clamp(2.5rem, 9vw, 7rem)", animationDelay: "60ms" }}>
-          One person.<br/>
-          One number.<br/>
-          <span className="italic text-signal">Most of the list.</span>
-        </h1>
-        <p className="mt-10 max-w-2xl text-lg md:text-xl text-ink-soft leading-relaxed fade-up" style={{ animationDelay: "180ms" }}>
-          Jay Handyman Service has been quietly working through Fresno&rsquo;s
-          home repair backlog for ten years. Plumbing, electrical, drywall,
-          ceiling fans, gutters, paint, tile — punctual, thorough, finished
-          early more often than not.
-        </p>
+      {/* HERO — one sentence, generous whitespace, single CTA */}
+      <section className="border-b border-line">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 pt-24 pb-32 lg:pt-36 lg:pb-44">
+          <p className="settle text-[11px] uppercase tracking-[0.22em] text-ink-quiet mb-12">
+            Fresno · Handyman · Since 2015
+          </p>
 
-        <div className="mt-10 flex flex-wrap gap-4 fade-up" style={{ animationDelay: "260ms" }}>
-          <a href={PHONE_HREF}
-             className="inline-flex items-center gap-3 bg-ink text-canvas px-7 py-4 rounded-full text-base hover:bg-signal transition-colors active:scale-[0.97]">
-            Call {PHONE}
-          </a>
-          <a href="#services"
-             className="inline-flex items-center gap-3 border border-ink/30 px-7 py-4 rounded-full text-base hover:border-ink hover:bg-canvas-soft transition-colors">
-            See the list
-          </a>
-        </div>
+          <h1 className="settle settle-1 font-display text-[clamp(4rem,13vw,11rem)] leading-[0.92] tracking-[-0.025em] text-ink">
+            Most of
+            <br />
+            <em className="italic font-normal">the list.</em>
+          </h1>
 
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 border-t border-line pt-8 gap-y-8">
-          {[
-            { k: "Years serving Fresno", v: "10" },
-            { k: "Yelp reviews",         v: "13" },
-            { k: "Years electrical exp.", v: "15" },
-            { k: "Trades on the truck",  v: "10+" },
-          ].map((s) => (
-            <div key={s.k}>
-              <p className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.22em] text-ink-soft">{s.k}</p>
-              <p className="font-[family-name:var(--font-display)] text-3xl md:text-4xl text-ink mt-2">{s.v}</p>
-            </div>
-          ))}
+          <p className="settle settle-2 mt-14 max-w-[52ch] text-[18px] leading-[1.55] text-ink-soft">
+            Plumbing, electrical, drywall, painting, fans, gutters, tile.{" "}
+            <span className="text-ink">One number. One person. Ten years on it.</span>
+          </p>
+
+          <div className="settle settle-3 mt-14">
+            <a
+              href={PHONE_HREF}
+              className="inline-flex items-center gap-3 bg-ink text-paper px-7 py-4 text-[14px] tracking-[0.04em] hover:bg-accent"
+            >
+              <PhoneIcon className="opacity-90" />
+              <span className="tnum">Call Jay · {PHONE}</span>
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="bg-ink text-canvas">
-        <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
-          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-canvas/60">From a customer</p>
-          <blockquote className="mt-6 font-[family-name:var(--font-display)] leading-[1.05] text-canvas"
-                      style={{ fontSize: "clamp(1.75rem, 4.5vw, 3.25rem)" }}>
-            &ldquo;He installed our ceiling fans, painted the rooms, and finished the
-            bathroom tile <span className="italic text-copper">before the day we&rsquo;d planned</span>.
-            Professional, timely, thorough.&rdquo;
-          </blockquote>
-          <p className="mt-8 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-canvas/50">
-            Yelp review · paraphrased
+      {/* TRUST LINE — single sentence, inline stats */}
+      <section className="border-b border-line bg-paper-warm/40">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-8 text-[14px] leading-[1.6] text-ink-soft">
+          <p className="font-display italic text-[18px] text-ink leading-[1.45]">
+            Ten years in Fresno. Fifteen before that on someone else&apos;s
+            electrical crews. Thirteen verified Yelp reviews and counting.
           </p>
         </div>
       </section>
 
-      <section id="services" className="mx-auto max-w-5xl px-6 py-20 md:py-28">
-        <div className="grid md:grid-cols-12 gap-10">
-          <div className="md:col-span-4">
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-ink-soft">The list</p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-ink leading-[1.02]"
-                style={{ fontSize: "clamp(2rem, 4.6vw, 3.5rem)" }}>
-              What can you cross off today?
-            </h2>
-            <p className="mt-6 text-ink-soft text-base">
-              Most home repair lists have six things on them. Jay covers most of
-              them in a single visit — that&rsquo;s the whole reason this
-              business exists.
-            </p>
-          </div>
-          <div className="md:col-span-8 grid sm:grid-cols-2 gap-px bg-line border border-line">
-            {services.map((s) => (
-              <article key={s.n} className="bg-canvas p-7 hover:bg-canvas-soft transition-colors">
-                <p className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.22em] text-signal">No. {s.n}</p>
-                <h3 className="mt-3 font-[family-name:var(--font-display)] text-2xl text-ink">{s.t}</h3>
-                <p className="mt-3 text-sm text-ink-soft leading-relaxed">{s.d}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-canvas-soft border-y border-line">
-        <div className="mx-auto max-w-5xl px-6 py-20 md:py-28 grid md:grid-cols-12 gap-10 items-center">
-          <div className="md:col-span-7">
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-ink-soft">About Jay Handyman</p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-ink leading-[1.02]"
-                style={{ fontSize: "clamp(2rem, 4.6vw, 3.5rem)" }}>
-              An electrician&rsquo;s eye, a handyman&rsquo;s hands.
-            </h2>
-            <p className="mt-8 text-lg text-ink-soft leading-relaxed">
-              The owner of Jay Handyman spent fifteen years as an electrician
-              before adding the rest of the trades. That foundation is why the
-              wiring on a fan install, the GFI on a bathroom remodel, or a
-              flickering circuit in the garage isn&rsquo;t a side note — it&rsquo;s
-              the easiest part of the job.
-            </p>
-            <p className="mt-4 text-lg text-ink-soft leading-relaxed">
-              Ten years later, the company runs out of West Ashlan in Fresno
-              and serves homes across the city and surrounding areas.
-            </p>
-          </div>
-          <aside className="md:col-span-5">
-            <div className="bg-canvas border-2 border-ink/15 p-6 shadow-[6px_8px_0_oklch(0.18_0.018_250_/_0.08)]">
-              <div className="flex items-center justify-between font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.22em] text-ink-soft border-b border-line pb-3">
-                <span>Today&rsquo;s ticket</span><span>JHS</span>
-              </div>
-              <ul className="mt-5 space-y-3 font-[family-name:var(--font-mono)] text-[13px]">
-                {[
-                  "Replace bathroom faucet cartridge",
-                  "Hang two ceiling fans (master, guest)",
-                  "Patch & paint hallway drywall",
-                  "Re-tile shower threshold",
-                  "Power-wash front walk",
-                ].map((line, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <span className="h-4 w-4 border border-ink/40 rounded-sm flex items-center justify-center text-signal">
-                      {i < 3 ? "✓" : ""}
-                    </span>
-                    <span className={i < 3 ? "line-through text-ink-soft" : "text-ink"}>{line}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 pt-4 border-t border-line font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.22em] text-ink-soft">
-                3 of 5 done — &ldquo;before expected&rdquo;
+      {/* SERVICES — flat list with hairlines, NO cards */}
+      <section id="work" className="border-b border-line">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-24 lg:py-36">
+          <div className="grid lg:grid-cols-12 gap-10 mb-16">
+            <div className="lg:col-span-5">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet mb-6">
+                The list
+              </p>
+              <h2 className="font-display text-[clamp(2.4rem,5.4vw,4.2rem)] leading-[1.0] tracking-[-0.02em]">
+                <em className="italic">What Jay does</em>{" "}
+                in a normal week.
+              </h2>
+            </div>
+            <div className="lg:col-span-7 lg:pt-3 text-[15.5px] leading-[1.65] text-ink-soft">
+              <p>
+                A working list, not a marketing menu. If something here matches
+                what you need, call. If your project is a combination of three
+                of these — that&apos;s normal too.
               </p>
             </div>
-          </aside>
+          </div>
+
+          <ul>
+            {services.map((s, i) => (
+              <li
+                key={s.name}
+                className="grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3rem_minmax(220px,1fr)_2fr] gap-x-5 sm:gap-x-8 gap-y-1 py-5 border-t border-line items-baseline"
+              >
+                <span className="tnum text-[12px] text-ink-quiet pt-1">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="font-display text-[clamp(1.25rem,2vw,1.55rem)] leading-tight tracking-[-0.012em] text-ink">
+                  {s.name}
+                </p>
+                <p className="text-[14.5px] leading-[1.55] text-ink-soft sm:text-right sm:max-w-[42ch] sm:justify-self-end col-start-2 sm:col-start-3">
+                  {s.note}
+                </p>
+              </li>
+            ))}
+            <li className="border-t border-line" aria-hidden="true" />
+          </ul>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-20 md:py-28">
-        <div className="grid md:grid-cols-12 gap-10">
-          <div className="md:col-span-7">
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-ink-soft">Get on the schedule</p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-ink leading-[0.98]"
-                style={{ fontSize: "clamp(2.25rem, 6vw, 4.75rem)" }}>
-              Easiest call you&rsquo;ll make this week.
-            </h2>
-            <p className="mt-8 text-ink-soft text-lg max-w-md">
-              Read your list off — Jay will tell you what fits in one visit and
-              what needs a second day. No upsell.
-            </p>
-            <a href={PHONE_HREF}
-               className="mt-10 inline-flex items-center gap-3 bg-ink text-canvas px-7 py-4 rounded-full text-base hover:bg-signal transition-colors active:scale-[0.97]">
-              Call {PHONE}
-            </a>
-          </div>
-          <aside className="md:col-span-5 bg-canvas-soft border border-line rounded-md p-6">
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-ink-soft">Office</p>
-            <p className="mt-4 font-[family-name:var(--font-display)] text-2xl text-ink">{ADDRESS}</p>
-            <div className="mt-6 pt-4 border-t border-line space-y-2 font-[family-name:var(--font-mono)] text-sm">
-              <p className="text-ink-soft">Phone</p>
-              <a className="text-ink hover:text-signal" href={PHONE_HREF}>{PHONE}</a>
+      {/* STANDOUT REVIEW — one oversized quote, no grid */}
+      <section className="border-b border-line bg-paper-warm/30">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-32 lg:py-44">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet mb-12">
+            One job, last summer
+          </p>
+
+          <blockquote className="font-display italic font-normal text-[clamp(2rem,5vw,4rem)] leading-[1.08] tracking-[-0.018em] text-ink max-w-[24ch]">
+            New ceiling fans. A whole room repainted. Bathroom tile finished. All
+            of it done before the date we&apos;d agreed on.
+          </blockquote>
+
+          <p className="mt-12 max-w-[52ch] text-[16px] leading-[1.6] text-ink-soft">
+            Multi-task project: install ceiling fans, paint rooms, finish bathroom
+            tile. Completed before the expected end date. The customer noted Jay
+            was professional, on-time, and thorough. That review is on Yelp; you
+            can read it there.
+          </p>
+
+          <a
+            href={YELP}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10 inline-flex items-center gap-2 text-[13px] uppercase tracking-[0.16em] text-ink-soft hover:text-accent underline decoration-line underline-offset-[6px] hover:decoration-accent"
+          >
+            Read the reviews on Yelp
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      {/* CONTACT — simple stack, single CTA, full-width map below */}
+      <section id="contact" className="border-b border-line">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-24 lg:py-36">
+          <div className="grid lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-7">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-ink-quiet mb-6">
+                Quote
+              </p>
+              <h2 className="font-display text-[clamp(2.4rem,5.4vw,4.2rem)] leading-[1.0] tracking-[-0.02em] text-ink">
+                Got something <em className="italic">on the list?</em>
+              </h2>
+              <p className="mt-7 max-w-[42ch] text-[16px] leading-[1.65] text-ink-soft">
+                The fastest way to a quote is the phone. Tell Jay what the room
+                looks like and what you&apos;re working with — most jobs get a
+                price the same day.
+              </p>
+
+              <a
+                href={PHONE_HREF}
+                className="mt-10 inline-flex items-center gap-3 bg-ink text-paper px-7 py-4 text-[14px] tracking-[0.04em] hover:bg-accent"
+              >
+                <PhoneIcon className="opacity-90" />
+                <span className="tnum">Call · {PHONE}</span>
+              </a>
             </div>
-            <a href={MAPS} target="_blank" rel="noopener"
-               className="mt-6 inline-flex items-center gap-2 text-ink underline underline-offset-4 hover:text-signal text-sm">
-              Get directions →
-            </a>
-          </aside>
+
+            <div className="lg:col-span-5 lg:pl-10 lg:border-l lg:border-line">
+              <dl className="space-y-6 text-[14.5px]">
+                <div className="flex items-start gap-3">
+                  <span className="text-ink-quiet pt-1"><PinIcon /></span>
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-1">Address</dt>
+                    <dd className="text-ink">{ADDRESS}</dd>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-ink-quiet pt-1"><ClockIcon /></span>
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-1">Hours</dt>
+                    <dd className="text-ink">{HOURS}</dd>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-ink-quiet pt-1"><PhoneIcon /></span>
+                  <div>
+                    <dt className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-1">Phone</dt>
+                    <dd className="tnum text-ink">{PHONE}</dd>
+                  </div>
+                </div>
+                <div className="pt-2">
+                  <dt className="text-[10px] uppercase tracking-[0.22em] text-ink-quiet mb-2">Find Jay</dt>
+                  <dd className="space-x-5 text-[13.5px]">
+                    <a href={YELP} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent underline decoration-line underline-offset-[5px] hover:decoration-accent">
+                      Yelp
+                    </a>
+                    <a href={NEXTDOOR} target="_blank" rel="noopener noreferrer" className="text-ink hover:text-accent underline decoration-line underline-offset-[5px] hover:decoration-accent">
+                      Nextdoor
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        {/* Full-width simple map — no double-bezel, no chrome */}
+        <div className="border-t border-line">
+          <iframe
+            src={MAPS_EMBED}
+            title="Jay's Handyman Service location"
+            width="100%"
+            height="360"
+            style={{ border: 0, display: "block", filter: "grayscale(0.35) contrast(0.95)" }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </section>
 
-      <footer className="border-t border-line">
-        <div className="mx-auto max-w-5xl px-6 py-10 flex flex-wrap items-center justify-between font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-ink-soft gap-4">
-          <p>Jay Handyman Service LLC · Fresno, CA · since 2014</p>
-          <div className="flex items-center gap-5">
-            <a href="https://www.yelp.com/biz/jay-s-handyman-service-fresno" target="_blank" rel="noopener" className="hover:text-ink">Yelp</a>
-            <a href="https://nextdoor.com/pages/jay-handyman-service-llc-fresno-ca/" target="_blank" rel="noopener" className="hover:text-ink">Nextdoor</a>
-            <a href={PHONE_HREF} className="hover:text-ink">{PHONE}</a>
-          </div>
+      {/* FOOTER — minimal */}
+      <footer className="bg-paper">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-start sm:items-baseline justify-between gap-4 text-[12.5px] text-ink-quiet">
+          <p className="font-display text-[16px] tracking-[-0.01em] text-ink">
+            Jay&apos;s Handyman Service
+          </p>
+          <p className="uppercase tracking-[0.18em] text-[10.5px]">
+            Fresno, CA · Since 2015
+          </p>
+          <a href={PHONE_HREF} className="tnum text-ink hover:text-accent">
+            {PHONE}
+          </a>
         </div>
       </footer>
     </>

@@ -1,34 +1,69 @@
 @import "tailwindcss";
 
 :root {
-  --canvas: oklch(0.96 0.01 80);
-  --canvas-soft: oklch(0.93 0.014 80);
-  --ink: oklch(0.20 0.018 250);
-  --ink-soft: oklch(0.36 0.02 250);
-  --line: oklch(0.84 0.012 240);
-  --signal: oklch(0.62 0.18 56);
-  --copper: oklch(0.68 0.16 60);
-  --moss: oklch(0.50 0.10 150);
+  --paper: oklch(0.972 0.012 90);
+  --paper-warm: oklch(0.945 0.018 80);
+  --ink: oklch(0.18 0.014 250);
+  --ink-soft: oklch(0.36 0.014 250);
+  --ink-quiet: oklch(0.55 0.014 250);
+  --line: oklch(0.18 0.014 250 / 0.10);
+  --line-strong: oklch(0.18 0.014 250 / 0.18);
+  --accent: oklch(0.50 0.15 248);   /* one accent — electrical blue, used sparingly */
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+html, body {
+  background: var(--paper) !important;
+  color: var(--ink);
+}
+
+body {
+  font-family: var(--font-body), Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 @theme inline {
-  --color-canvas: var(--canvas);
-  --color-canvas-soft: var(--canvas-soft);
+  --color-paper: var(--paper);
+  --color-paper-warm: var(--paper-warm);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
+  --color-ink-quiet: var(--ink-quiet);
   --color-line: var(--line);
-  --color-signal: var(--signal);
-  --color-copper: var(--copper);
-  --color-moss: var(--moss);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
   --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
   --font-body: var(--font-body);
 }
 
-html { background: var(--canvas) !important; }
-body { background: var(--canvas) !important; color: var(--ink); }
+::selection { background: var(--accent); color: var(--paper); }
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.fade-up { animation: fadeUp 700ms ease-out both; }
+/* emil: scale(0.97) on press, transition only transform/opacity, custom ease-out */
+button, a {
+  transition: transform 180ms var(--ease-out), color 200ms ease, background-color 200ms ease, border-color 200ms ease, opacity 200ms ease;
+}
+button:active, a:active { transform: scale(0.97); }
 
-@media (prefers-reduced-motion: reduce) { .fade-up { animation: none !important; } }
+/* Stagger entries — 50ms between items per emil's spec */
+@keyframes settle {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.settle { animation: settle 600ms var(--ease-out) both; }
+.settle-1 { animation-delay: 60ms; }
+.settle-2 { animation-delay: 120ms; }
+.settle-3 { animation-delay: 180ms; }
+.settle-4 { animation-delay: 240ms; }
+
+/* Tabular figures for stats */
+.tnum { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
