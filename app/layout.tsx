@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Source_Serif_4 } from "next/font/google";
+import { Big_Shoulders, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const display = Source_Serif_4({
+const display = Big_Shoulders({
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["700", "800", "900"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const body = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
@@ -25,8 +30,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} antialiased`}>
-      <body className="min-h-[100dvh] flex flex-col bg-ivory text-espresso">
+    <html lang="en" className={`${display.variable} ${body.variable} antialiased`}>
+      <body className="min-h-[100dvh] flex flex-col bg-paper text-ink">
         {children}
       </body>
     </html>

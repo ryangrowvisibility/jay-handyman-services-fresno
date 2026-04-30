@@ -1,50 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --ivory: oklch(0.965 0.012 75);
-  --ivory-warm: oklch(0.94 0.018 72);
-  --espresso: oklch(0.20 0.018 50);
-  --espresso-soft: oklch(0.36 0.018 50);
-  --espresso-quiet: oklch(0.55 0.014 50);
-  --rust: oklch(0.52 0.155 45);
-  --line: oklch(0.20 0.018 50 / 0.10);
-  --line-strong: oklch(0.20 0.018 50 / 0.20);
+  /* Workshop minimal — pure white + ink + workshop orange */
+  --paper: oklch(0.995 0 0);
+  --paper-warm: oklch(0.97 0.004 70);
+  --ink: oklch(0.16 0.008 250);
+  --ink-soft: oklch(0.36 0.010 250);
+  --ink-quiet: oklch(0.55 0.010 250);
+  --rule: oklch(0.16 0.008 250 / 0.10);
+  --rule-strong: oklch(0.16 0.008 250 / 0.22);
+  --rule-heavy: oklch(0.16 0.008 250 / 0.55);
+  --orange: oklch(0.66 0.18 55);
+  --orange-deep: oklch(0.55 0.20 50);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 html, body {
-  background: var(--ivory) !important;
-  color: var(--espresso);
+  background: var(--paper) !important;
+  color: var(--ink);
 }
 
 body {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-body), Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 @theme inline {
-  --color-ivory: var(--ivory);
-  --color-ivory-warm: var(--ivory-warm);
-  --color-espresso: var(--espresso);
-  --color-espresso-soft: var(--espresso-soft);
-  --color-espresso-quiet: var(--espresso-quiet);
-  --color-rust: var(--rust);
-  --color-line: var(--line);
-  --color-line-strong: var(--line-strong);
+  --color-paper: var(--paper);
+  --color-paper-warm: var(--paper-warm);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-quiet: var(--ink-quiet);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-rule-heavy: var(--rule-heavy);
+  --color-orange: var(--orange);
+  --color-orange-deep: var(--orange-deep);
   --font-display: var(--font-display);
+  --font-body: var(--font-body);
 }
 
-::selection { background: var(--rust); color: var(--ivory); }
+::selection { background: var(--orange); color: var(--paper); }
 
 button, a {
   transition: transform 180ms var(--ease-out), color 200ms ease, background-color 200ms ease, border-color 200ms ease, opacity 200ms ease;
 }
-button:active, a:active { transform: scale(0.97); }
+button:active, a:active { transform: scale(0.98); }
 
 @keyframes settle {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .settle { animation: settle 600ms var(--ease-out) both; }
@@ -53,6 +59,20 @@ button:active, a:active { transform: scale(0.97); }
 .settle-3 { animation-delay: 240ms; }
 
 .tnum { font-variant-numeric: tabular-nums; }
+
+/* Big Shoulders is a heavy condensed grotesque — pull tracking tight at large sizes */
+.bs-display {
+  letter-spacing: -0.005em;
+  line-height: 0.85;
+  text-transform: uppercase;
+}
+
+/* Heavy double-rule between major sections — workshop / blueprint feel */
+.dbl-rule {
+  border-top: 1px solid var(--rule-heavy);
+  border-bottom: 4px solid var(--rule-heavy);
+  height: 8px;
+}
 
 details.faq summary { list-style: none; cursor: pointer; }
 details.faq summary::-webkit-details-marker { display: none; }
