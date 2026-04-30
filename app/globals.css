@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  /* Maximum distill — warm ivory, deep espresso, ONE rust accent */
   --ivory: oklch(0.965 0.012 75);
   --ivory-warm: oklch(0.94 0.018 72);
   --espresso: oklch(0.20 0.018 50);
   --espresso-soft: oklch(0.36 0.018 50);
   --espresso-quiet: oklch(0.55 0.014 50);
-  --rust: oklch(0.52 0.155 45);    /* single accent — replaces V2 electrical-blue */
+  --rust: oklch(0.52 0.155 45);
   --line: oklch(0.20 0.018 50 / 0.10);
   --line-strong: oklch(0.20 0.018 50 / 0.20);
 
@@ -54,6 +53,11 @@ button:active, a:active { transform: scale(0.97); }
 .settle-3 { animation-delay: 240ms; }
 
 .tnum { font-variant-numeric: tabular-nums; }
+
+details.faq summary { list-style: none; cursor: pointer; }
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq[open] .faq-mark { transform: rotate(45deg); }
+.faq-mark { transition: transform 280ms var(--ease-out); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
